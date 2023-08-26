@@ -11,17 +11,11 @@ class Config(metaclass=MetaSingleton):
         self.config_loader = ConfigLoader()
         self.config_loader.update_from_yaml_file(config_file_path)
 
-        def get(self, setting_name):
-            return self.config_loader.get(setting_name, None)
-
-        def to_dict(self):
-            loader = self.config_loader
-            return {key: loader.get(key) for key in loader.keys()}
+    def get(self, setting_name):
+        return self.config_loader.get(setting_name, None)
 
 
 LOGGING_LEVEL = "LOGGING_LEVEL"
 LOGGING_FORMAT = "LOGGING_FORMAT"
 WEB_HOST = "WEB_HOST"
 WEB_PORT = "WEB_PORT"
-
-DB_URI = "DB_URI"
