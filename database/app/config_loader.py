@@ -1,6 +1,6 @@
 import os
 
-from singleton import MetaSingleton
+from database.app.singleton import MetaSingleton
 from configloader import ConfigLoader
 
 config_abs_path = '/'.join(os.path.abspath(__file__).split('/')[0:-1])
@@ -23,5 +23,4 @@ LOGGING_LEVEL = "LOGGING_LEVEL"
 LOGGING_FORMAT = "LOGGING_FORMAT"
 WEB_HOST = "WEB_HOST"
 WEB_PORT = "WEB_PORT"
-
 DB_URI = "DB_URI"

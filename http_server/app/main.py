@@ -1,13 +1,18 @@
+from typing import Sequence
+
 import uvicorn
 import logging
 
 from fastapi import FastAPI, Depends
-import config_loader as config_loader
+from http_server.app import config_loader as config_loader
 from database.app.db import DB
-from database.app.models import Employee, TimeTracking
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from http_server.app.models import TimeTracking, Employee
 
 config = config_loader.Config()
 app = FastAPI()
+db_instance = DB()
 
 logging.basicConfig(
     level=logging.getLevelName(config.get(config_loader.LOGGING_LEVEL)),
@@ -16,15 +21,11 @@ logging.basicConfig(
 
 logger = logging.getLogger("uvicorn.error")
 
-""" Возвращает весь массив объектов таблицы time_tracking
-"""
 
-
-@app.get("/all_time")
-async def get_all_time(db_instance: DB = Depends()):
-    async with db_instance.get_async_session() as session:
-        pass
-
+@app.get("/time_tracking/all", response_model=list[TimeTracking])
+async def get_all_time(session: AsyncSession = Depends(db_instance.get_async_session)) -> list[TimeTracking]:
+    result = await session.execute(select(TimeTracking))
+    return result.scalars().all()
 
 if __name__ == "__main__":
     logger.info("STARTING SERVER")

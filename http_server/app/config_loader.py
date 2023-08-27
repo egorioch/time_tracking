@@ -1,6 +1,6 @@
 import os
 
-from singleton import MetaSingleton
+from http_server.app.singleton import MetaSingleton
 from configloader import ConfigLoader
 
 config_abs_path = '/'.join(os.path.abspath(__file__).split('/')[0:-1])
